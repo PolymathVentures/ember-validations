@@ -80,9 +80,13 @@ var ArrayValidatorProxy = Ember.ArrayProxy.extend(setValidityMixin, {
 });
 
 export default Ember.Mixin.create(setValidityMixin, {
+  errorPropertyName: Ember.computed(function() {
+    var config = Ember.getOwner(this).resolveRegistration('config:environment');
+    return config.emberValidations ? config.emberValidations.errorPropertyName : false || 'emberErrors';
+  }),
   init: function() {
     this._super();
-    this.errors = Errors.create();
+    this.set(this.get('errorPropertyName'), Errors.create());
     this.dependentValidationKeys = {};
     this.validators = Ember.A();
     if (get(this, 'validations') === undefined) {
@@ -97,7 +101,7 @@ export default Ember.Mixin.create(setValidityMixin, {
             errors.addObjects(validator.errors);
           }
         }, this);
-        set(this, 'errors.' + sender.property, errors);
+        set(this, this.get('errorPropertyName') + '.' + sender.property, errors);
       });
     }, this);
   },

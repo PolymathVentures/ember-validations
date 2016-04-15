@@ -1,7 +1,5 @@
 # Ember Validations #
 
-[![Build Status](https://secure.travis-ci.org/dockyard/ember-validations.svg?branch=master)](http://travis-ci.org/dockyard/ember-validations)
-
 ## Building yourself ##
 
 ```bash
@@ -42,6 +40,14 @@ Bower.
 If it is a bug [please open an issue on GitHub](https://github.com/dockyard/ember-validations/issues).
 
 ## Usage ##
+
+You can set a custom name for the errors property in environment.js. Will default to emberErrors.
+
+```javascript
+    emberValidations: {
+        errorPropertyName: 'emberErrors'
+    },
+```
 
 You need to mixin `EmberValidations` into any `Ember.Object` you want to add
 validations to:
