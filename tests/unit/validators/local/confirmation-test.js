@@ -86,6 +86,6 @@ test('message integration on model, prints message on Confirmation property', fu
     set(otherModel, 'attribute', 'test');
   });
 
-  assert.deepEqual(get(otherModel, 'errors.attributeConfirmation'), ["doesn't match attribute"]);
-  assert.deepEqual(get(otherModel, 'errors.attribute'), []);
+  assert.deepEqual(get(otherModel, otherModel.get('errorPropertyName') + '.attributeConfirmation'), ["doesn't match attribute"]);
+  assert.deepEqual(get(otherModel, otherModel.get('errorPropertyName') + '.attribute'), []);
 });

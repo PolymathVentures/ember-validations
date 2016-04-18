@@ -81,8 +81,20 @@ var ArrayValidatorProxy = Ember.ArrayProxy.extend(setValidityMixin, {
 
 export default Ember.Mixin.create(setValidityMixin, {
   errorPropertyName: Ember.computed(function() {
-    var config = Ember.getOwner(this).resolveRegistration('config:environment');
-    return config.emberValidations ? config.emberValidations.errorPropertyName : false || 'emberErrors';
+
+    const CONFIG_KEY = 'config:environment';
+    const owner = getOwner(this);
+
+    if (owner && owner.hasRegistration && owner.hasRegistration(CONFIG_KEY)) {
+      const config = owner.resolveRegistration(CONFIG_KEY);
+
+      if (config) {
+        return config.emberValidations ? config.emberValidations.errorPropertyName : false || 'emberErrors';
+      }
+    }
+
+    return 'emberErrors';
+
   }),
   init: function() {
     this._super();
@@ -158,7 +170,7 @@ export default Ember.Mixin.create(setValidityMixin, {
   validate: function() {
     var self = this;
     return this._validate().then(function(vals) {
-      var errors = get(self, 'errors');
+      var errors = get(self, self.get('errorPropertyName'));
       if (vals.indexOf(false) > -1) {
         return Ember.RSVP.reject(errors);
       }

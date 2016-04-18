@@ -9,7 +9,7 @@ function validateValues(object, propertyName, values, isTestForValid) {
 
   values.forEach(function(value) {
     function handleValidation(errors) {
-      var hasErrors = object.get('errors.' + propertyName + '.firstObject');
+      var hasErrors = object.get(object.get('errorPropertyName') + '.' + propertyName + '.firstObject');
       if ((hasErrors && !isTestForValid) || (!hasErrors && isTestForValid)) {
         validatedValues.push(value);
       }
